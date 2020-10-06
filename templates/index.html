@@ -12,24 +12,54 @@
   </head>
   <body>
     <div class="container">
-      <div class="pt-5 text-center">
-        <input
-          type="text"
-          class="form-control border border-primary"
-          placeholder="Paste the URL of any site"
-          aria-label="Username"
-          aria-describedby="basic-addon1"
-        />
-        <h5 class="p-2 text-secondary">OR</h5>
-        <textarea
-          rows="10"
-          placeholder="Paste any text"
-          class="form-control border border-primary"
-          aria-label="With textarea"
-        ></textarea>
-        <button class="btn btn-success m-4">ASK</button>
-      </div>
-      
+      <form action="/ask" method="POST">
+        <div class="pt-5 text-center">
+          <input
+            id="url"
+            type="text"
+            class="form-control border border-primary"
+            placeholder="Paste the URL of any site"
+            name="input-url"
+          />
+          <h5 class="p-2 text-secondary">OR</h5>
+          <textarea
+            id="text"
+            rows="10"
+            placeholder="Paste any text"
+            class="form-control border border-primary"
+            name="input-text"
+          ></textarea>
+          <button type="submit" class="btn btn-success m-4">ASK</button>
+          <button id='clear_button' type="button" class="btn btn-danger m-4">Clear</button>
+        </div>
+      </form>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      $(window).on('load',() => {
+        $("#url").on("keyup", () => {
+          if ($("#url").val()) {
+            $("#url").removeAttr("disabled");
+            $("#text").attr("disabled", "disabled");
+          } else {
+            $("#text").removeAttr("disabled");
+          }
+        });
+        $("#text").on("keyup", () => {
+          if ($("#text").val()) {
+            $("#text").removeAttr("disabled");
+            $("#url").attr("disabled", "disabled");
+          } else {
+            $("#url").removeAttr("disabled");
+          }
+        });
+        $('#clear_button').on('click',()=>{
+            $("#url").removeAttr("disabled");
+            $("#text").removeAttr("disabled");
+            $("#url").val('');
+            $("#text").val('');
+        })
+    });
+    </script>
   </body>
 </html>
