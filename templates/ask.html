@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,28 +10,50 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#textInput").keypress(function (event) {
+          if (event.keyCode == 13) {
+            getBotResponse();
+          }
+        });
+      });
+      function getBotResponse() {
+        var rawText = $("#textInput").val();
+        var userHtml =
+          '<div class="user-message text-white rounded bg-primary m-2 p-1">' +
+          rawText +
+          "</div>";
+        $("#textInput").val("");
+        $("#chatbox").append(userHtml);
+        $.get("/ask", { msg: rawText }).done(function (data) {
+          var botHtml =
+            '<div class="user-message text-white rounded bg-secondary m-2 p-1">' +
+            data +
+            "</div>";
+          $("#chatbox").append(botHtml);
+        });
+      }
+    </script>
   </head>
+
   <body style="background-color: lightgray">
     <div class="container">
-      <div class="pt-5">
-        <div class="card" style="height: 400px">
-          <div class="card-body">
-              <div class="bot-message text-white rounded bg-secondary m-2 p-1">
-                Hi
-              </div>
-              <div class="user-message text-white rounded bg-primary m-2 p-1">
-                Hello
-              </div>
-              <div>{{ value }}</div>
+      <div class="m-5" style="height: 400px; background-color: white; overflow-y:auto;">
+        <div id="chatbox" class="p-5 m-3">
+          <div class="user-message text-white rounded bg-secondary m-2 p-1">
+            Hi! I am intelligent bot 🤖. How can I help you?
           </div>
         </div>
-        <br>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Enter question here...."
-        />
       </div>
+      <br />
+      <input
+        id="textInput"
+        type="text"
+        class="form-control"
+        placeholder="Enter question here...."
+      />
     </div>
   </body>
 </html>
